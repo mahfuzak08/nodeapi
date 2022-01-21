@@ -17,10 +17,10 @@ const Position = db.position;
 
 db.sequelize.sync();
 // force: true will drop the table if it already exists
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Database with { force: true }');
-//   initial();
-// });
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Database with { force: true }');
+  initial();
+});
 
 // simple route
 app.get("/", (req, res) => {
@@ -33,9 +33,40 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// function initial() {
-//     Position.create({
-//         id: 1,
-//         name: "CEO"
-//     });
-// }
+function initial() {
+    Position.create({
+        id: 1,
+        name: "CEO",
+        basic: 500000
+    });
+    Position.create({
+        id: 2,
+        name: "Director",
+        basic: 300000
+    });
+    Position.create({
+        id: 3,
+        name: "GM",
+        basic: 250000
+    });
+    Position.create({
+        id: 4,
+        name: "Manager",
+        basic: 200000
+    });
+    Position.create({
+        id: 5,
+        name: "Sr. Programmer",
+        basic: 150000
+    });
+    Position.create({
+        id: 6,
+        name: "Programmer",
+        basic: 100000
+    });
+    Position.create({
+        id: 7,
+        name: "Jr. Programmer",
+        basic: 50000
+    });
+}
