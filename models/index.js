@@ -27,11 +27,10 @@ db.sequelize = sequelize;
 db.user = require("../models/user.js")(sequelize, Sequelize);
 db.position = require("./position.js")(sequelize, Sequelize);
 
-db.user.hasOne(db.position);
-db.position.belongsToMany(db.user, {
-  through: "user_position",
-  foreignKey: "posId",
-  otherKey: "userId"
+db.user.belongsTo(db.position,{
+    through: "user_position",
+    foreignKey: "posId",
+    otherKey: "userId"
 });
 
 module.exports = db;
