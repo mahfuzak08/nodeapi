@@ -51,7 +51,7 @@ module.exports = function(app) {
             User.findAll({
                 include: { model: Position, required: true },
                 where: {
-                    posId: req.query.position_id
+                    positionId: req.query.position_id
                 }
             }).then(users => {
                 if(users){
@@ -70,7 +70,7 @@ module.exports = function(app) {
                 User.findAll({
                     include: { model: Position, required: true },
                     where: {
-                        posId: position.id
+                        positionId: position.id
                     }
                 }).then(users => {
                     if(users){

@@ -27,10 +27,7 @@ db.sequelize = sequelize;
 db.user = require("../models/user.js")(sequelize, Sequelize);
 db.position = require("./position.js")(sequelize, Sequelize);
 
-db.user.belongsTo(db.position,{
-    through: "user_position",
-    foreignKey: "posId",
-    otherKey: "userId"
-});
+db.position.hasMany(db.user);
+db.user.belongsTo(db.position);
 
 module.exports = db;

@@ -1,11 +1,9 @@
-const { checkDuplicateEmail, checkPositionExisted } = require("../middleware/signupVerify");
+const { signupVerify, signinVerify } = require("../middleware/signupVerify");
 const db = require("../models");
 const authConfig = require("../config/auth");
 
 const User = db.user;
 const Position = db.position;
-
-const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -19,7 +17,7 @@ module.exports = function(app) {
         next();
     });
 
-    app.post("/api/auth/signup", [checkDuplicateEmail, checkPositionExisted], function(req, res, next){
+    app.post("/api/auth/signup", [ signupVerify ], function(req, res, next){
         // Save User to Database
         User.create({
             full_name: req.body.full_name,
@@ -47,7 +45,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post("/api/auth/signin", function(req, res, next){
+    app.post("/api/auth/signin", [ signinVerify ], function(req, res, next){
         User.findOne({
             include: { model: Position, required: true },
             where: {
