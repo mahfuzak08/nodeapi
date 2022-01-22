@@ -1,8 +1,21 @@
+const multer  = require('multer');
+var path = require('path');
 const db = require("../models");
 const User = db.user;
 const Position = db.position;
 
 const { verifyToken } = require("../middleware/auth");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+});
+
+var upload = multer({ storage: storage });
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -13,6 +26,9 @@ module.exports = function(app) {
         next();
     });
 
+    /**
+     * Get all position list for signup data
+     */
     app.get("/api/get/position", function(req, res, next){
         Position.findAll({
                 attributes: { exclude: ['basic'] }
@@ -25,6 +41,10 @@ module.exports = function(app) {
         });
     });
     
+    /**
+     * Get all employee by given the position
+     * user can use position_id or position_name for getting the data
+     */
     app.get("/api/get/employee_by_position", [verifyToken], function(req, res, next){
         // console.log(29, req.userId);
         if(req.query.position_id){
@@ -65,22 +85,33 @@ module.exports = function(app) {
             next();
         }
     });
+    
+    /**
+     * Get all employee, just verify the token
+     */
+    app.get("/api/get/all/employee", [verifyToken], function(req, res, next){
+        User.findAll({
+            include: { model: Position, required: true }
+        }).then(users => {
+            if(users){
+                res.status(200).send(users);
+            }
+        }).catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+    });
 
-//   app.get(
-//     "/api/test/user",
-//     [authJwt.verifyToken],
-//     controller.userBoard
-//   );
-
-//   app.get(
-//     "/api/test/mod",
-//     [authJwt.verifyToken, authJwt.isModerator],
-//     controller.moderatorBoard
-//   );
-
-//   app.get(
-//     "/api/test/admin",
-//     [authJwt.verifyToken, authJwt.isAdmin],
-//     controller.adminBoard
-//   );
+    /**
+     * Profile pic update
+     */
+    app.patch("/api/patch/user_img", [verifyToken, upload.single('avatar')], function(req, res, next){
+        User.findOne({ where: { id: req.userId } })
+        .then(function (record) {
+            return record.update({img: 'uploads/' + req.file.filename});
+        }).then(function (record) {
+            res.status(200).send(record);
+        }).catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+    });
 };
