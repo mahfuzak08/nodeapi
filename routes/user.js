@@ -5,6 +5,7 @@ const User = db.user;
 const Position = db.position;
 
 const { verifyToken } = require("../middleware/auth");
+const logger = require('../logger');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -37,6 +38,7 @@ module.exports = function(app) {
                 return res.status(200).send(positions);
             }
         }).catch(err => {
+            logger.error(err);
             res.status(500).send({ message: err.message });
         });
     });
@@ -58,6 +60,7 @@ module.exports = function(app) {
                     res.status(200).send(users);
                 }
             }).catch(err => {
+                logger.error(err);
                 res.status(500).send({ message: err.message });
             });
         }
@@ -78,6 +81,7 @@ module.exports = function(app) {
                     }
                 });
             }).catch(err => {
+                logger.error(err);
                 res.status(500).send({ message: err.message });
             });
         }
@@ -97,6 +101,7 @@ module.exports = function(app) {
                 res.status(200).send(users);
             }
         }).catch(err => {
+            logger.error(err);
             res.status(500).send({ message: err.message });
         });
     });
@@ -111,6 +116,7 @@ module.exports = function(app) {
         }).then(function (record) {
             res.status(200).send(record);
         }).catch(err => {
+            logger.error(err);
             res.status(500).send({ message: err.message });
         });
     });

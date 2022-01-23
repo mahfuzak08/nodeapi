@@ -1,6 +1,7 @@
 const { signupVerify, signinVerify } = require("../middleware/signupVerify");
 const db = require("../models");
 const authConfig = require("../config/auth");
+const logger = require("../logger");
 
 const User = db.user;
 const Position = db.position;
@@ -41,6 +42,7 @@ module.exports = function(app) {
                 }
             });
         }).catch(err => {
+            logger.error(err);
             res.status(500).send({ message: err.message });
         });
     });
@@ -71,6 +73,7 @@ module.exports = function(app) {
             
             res.status(200).send({user, token});
         }).catch(err => {
+            logger.error(err);
             res.status(500).send({ message: err.message });
         });
     });

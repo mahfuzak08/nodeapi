@@ -15,6 +15,7 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.13.0"
+    "sequelize": "^6.13.0",
+    "winston": "^3.4.0"
   }
 }
