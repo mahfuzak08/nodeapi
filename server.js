@@ -4,6 +4,7 @@ const logger = require("./logger");
 
 const app = express();
 
+app.use(require('express-status-monitor')());
 app.use(cors());
 
 // parse requests of content-type - application/json
