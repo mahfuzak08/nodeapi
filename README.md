@@ -112,9 +112,11 @@ The cluster module is Node’s helper for us to implement the cloning scalabilit
 
 ### Load Balancing Result
 I'm also attaching two result of my app, where I tested 4 API request with 10 vertual user. Here is the details of the test-
+* Load testing script
+Script is available in ./k6 script folder
 * Single thread
 https://app.k6.io/runs/public/45de30f439894665abfd3b6c1d2dd4b4
-
+![alt text](https://github.com/mahfuzak08/nodeapi/blob/master/single.png,"Single")
 * Multi thread
 https://app.k6.io/runs/public/844636a422424ea99452a1dc844b63f9
-
+![alt text](https://raw.githubusercontent.com/mahfuzak08/nodeapi/master/multi.png, "Multi")
